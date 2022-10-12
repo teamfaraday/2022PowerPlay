@@ -22,8 +22,10 @@ public class TestAutonomous extends LinearOpMode {
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
         DcMotor rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
+        DcMotor leftClaw = hardwareMap.get(DcMotor.class, "leftClaw");
+        DcMotor rightClaw = hardwareMap.get(DcMotor.class, "rightClaw");
 
-        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake);
+        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake, leftClaw, rightClaw);
         mm.setMotorState();
 
         BNO055IMU imu;

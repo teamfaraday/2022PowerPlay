@@ -9,8 +9,12 @@ public class MotorManager {
     private DcMotor backRight;
     private DcMotor leftIntake;
     private DcMotor rightIntake;
+    private DcMotor leftViper;
+    private DcMotor rightViper;
 
-    public MotorManager(DcMotor l, DcMotor r, DcMotor bl, DcMotor br, DcMotor lt, DcMotor rt){
+    private static int INCHES_PER_TICK_VIPER = 1;
+
+    public MotorManager(DcMotor l, DcMotor r, DcMotor bl, DcMotor br, DcMotor lt, DcMotor rt, DcMotor lC, DcMotor rC){
 
         frontLeft = l;
         frontRight = r;
@@ -18,6 +22,9 @@ public class MotorManager {
         backRight = br;
         leftIntake = lt;
         rightIntake = rt;
+        leftViper = lC;
+        rightViper = rC;
+
 
     }
 
@@ -34,6 +41,9 @@ public class MotorManager {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
+        leftViper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightViper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public void stopResetEncoder() {
@@ -44,6 +54,8 @@ public class MotorManager {
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftViper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightViper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
 
@@ -55,6 +67,23 @@ public class MotorManager {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftIntake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftViper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightViper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
+
+    public void moveViperLow() {
+        int newTarget = 0;
+        
+        leftViper.setTargetPosition(newTarget);
+        rightViper.setTargetPosition(newTarget);
+        
+        leftViper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightViper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+
 
     }
 }

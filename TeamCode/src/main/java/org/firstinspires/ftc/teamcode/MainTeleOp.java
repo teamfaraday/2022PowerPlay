@@ -17,8 +17,10 @@ public class MainTeleOp extends LinearOpMode {
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
         DcMotor rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
+        DcMotor leftClaw = hardwareMap.get(DcMotor.class, "leftClaw");
+        DcMotor rightClaw = hardwareMap.get(DcMotor.class, "rightCLaw");
 
-        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake);
+        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake, leftClaw, rightClaw);
         mm.setMotorState();
 
         waitForStart();
@@ -28,7 +30,6 @@ public class MainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            /**
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.25;
             double rx = gamepad1.right_stick_x;
@@ -38,13 +39,6 @@ public class MainTeleOp extends LinearOpMode {
             frontRight.setPower(Range.clip(y - x - rx, minPower, maxPower));
             backRight.setPower(Range.clip(y + x - rx, minPower, maxPower));
 
-             **/
-
-            frontLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-            backLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-
-            frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-            backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
             if(gamepad1.a){
 
