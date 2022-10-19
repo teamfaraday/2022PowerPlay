@@ -39,7 +39,6 @@ public class MotorManager {
         rightIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         leftViper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightViper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -84,6 +83,6 @@ public class MotorManager {
 
 
 
-
     }
+
 }

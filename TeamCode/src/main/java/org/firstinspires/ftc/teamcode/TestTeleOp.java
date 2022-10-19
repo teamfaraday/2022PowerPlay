@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "MainTeleOp")
-public class MainTeleOp extends LinearOpMode {
+@TeleOp(name = "test")
+public class TestTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,14 +16,10 @@ public class MainTeleOp extends LinearOpMode {
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-
-       //DcMotor leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
-        //DcMotor rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
-        //DcMotor leftClaw = hardwareMap.get(DcMotor.class, "leftClaw");
-        //DcMotor rightClaw = hardwareMap.get(DcMotor.class, "rightCLaw");
-        //MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake, leftClaw, rightClaw);
-        // mm.setMotorState();
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         waitForStart();
 
@@ -40,6 +36,7 @@ public class MainTeleOp extends LinearOpMode {
             backLeft.setPower(Range.clip(y - x + rx, minPower, maxPower));
             frontRight.setPower(Range.clip(y - x - rx, minPower, maxPower));
             backRight.setPower(Range.clip(y + x - rx, minPower, maxPower));
+
 
         }
     }
