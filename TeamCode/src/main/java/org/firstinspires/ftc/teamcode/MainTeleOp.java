@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "MainTeleOp")
@@ -15,15 +16,26 @@ public class MainTeleOp extends LinearOpMode {
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
+        DcMotor viper = hardwareMap.get(DcMotor.class, "viper");
 
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        Servo left = hardwareMap.get(Servo.class, "left");
+        Servo right = hardwareMap.get(Servo.class, "right");
 
-       //DcMotor leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
-        //DcMotor rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
-        //DcMotor leftClaw = hardwareMap.get(DcMotor.class, "leftClaw");
-        //DcMotor rightClaw = hardwareMap.get(DcMotor.class, "rightCLaw");
-        //MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, leftIntake, rightIntake, leftClaw, rightClaw);
-        // mm.setMotorState();
+
+        boolean lowStageUp = false;
+        boolean midStageUp = false;
+        boolean highStageUp = false;
+
+        boolean clawOpen = true;
+        boolean lastPressed = false;
+
+        final int FIRST_LEVEL = 100;
+        final int SECOND_LEVEL = 0;
+        final int THIRD_LEVEL = 0;
+
+        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, viper);
+
+        mm.setMotorState();
 
         waitForStart();
 
@@ -31,6 +43,7 @@ public class MainTeleOp extends LinearOpMode {
         double maxPower = 0.8;
 
         while (opModeIsActive()) {
+
 
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.25;
@@ -40,6 +53,92 @@ public class MainTeleOp extends LinearOpMode {
             backLeft.setPower(Range.clip(y - x + rx, minPower, maxPower));
             frontRight.setPower(Range.clip(y - x - rx, minPower, maxPower));
             backRight.setPower(Range.clip(y + x - rx, minPower, maxPower));
+
+            // Low Level = 13.5 inches
+            if (gamepad1.a) {
+
+                if (!lowStageUp) {
+
+                    viper.setTargetPosition(1280);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    while (viper.isBusy()) {
+
+                        resetRuntime();
+                        viper.setPower(0.8);
+
+                        //500 ticks / 12.5 inches
+                    }
+
+                    lowStageUp = true;
+
+                }
+
+
+            } else if (!gamepad1.a) {
+
+                viper.setPower(0);
+
+            }
+
+            // Mid Level = 23.5 inches
+            if (gamepad1.b) {
+
+                if (!midStageUp) {
+
+                    viper.setTargetPosition(2500);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    while (viper.isBusy()) {
+
+                        resetRuntime();
+                        viper.setPower(0.4);
+
+                        //500 ticks / 12.5 inches
+
+                        midStageUp = true;
+                    }
+                }
+
+            } else if (!gamepad1.b) {}
+
+            // High Level = 33.5 inches
+            if (gamepad1.y) {
+
+                if (!highStageUp) {
+
+                    viper.setTargetPosition(39 20);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    while (viper.isBusy()) {
+
+                        resetRuntime();
+                        viper.setPower(0.8);
+
+                        //500 ticks / 12.5 inches
+                    }
+
+                    highStageUp = true;
+                }
+
+            } else if (!gamepad1.y) {}
+            if (gamepad1.left_bumper) {
+
+                left.setPosition(0.5);
+                right.setPosition(0.4);
+
+            }
+
+            if (gamepad1.right_bumper) {
+
+                left.setPosition(0.7);
+                right.setPosition(0.2);
+
+            }
+
 
         }
     }

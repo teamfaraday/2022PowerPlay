@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "ViperTest")
+@TeleOp(name = "ViperTest")
 public class ViperTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,9 +17,30 @@ public class ViperTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            viperLeft.setPower(0.8);
-            viperRight.setPower(0.8);
-            sleep(1000);
+            if(gamepad1.a) {
+
+                viperLeft.setPower(-0.3);
+                viperRight.setPower(-0.3);
+
+            } else if (!gamepad1.a) {
+
+                viperLeft.setPower(0);
+                viperRight.setPower(0);
+
+            }
+
+            if (gamepad1.b) {
+
+                viperLeft.setPower(0.3);
+                viperRight.setPower(0.3);
+
+
+            } else if (!gamepad1.b) {
+
+                viperLeft.setPower(0);
+                viperRight.setPower(0);
+
+            }
         }
 
     }
