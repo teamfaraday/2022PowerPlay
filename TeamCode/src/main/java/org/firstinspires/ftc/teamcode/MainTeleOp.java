@@ -9,14 +9,14 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "MainTeleOp")
 public class MainTeleOp extends LinearOpMode {
 
+    DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+    DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+    DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+    DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
+    DcMotor viper = hardwareMap.get(DcMotor.class, "viper");
+
     @Override
     public void runOpMode() throws InterruptedException {
-
-        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
-        DcMotor viper = hardwareMap.get(DcMotor.class, "viper");
 
         Servo left = hardwareMap.get(Servo.class, "left");
         Servo right = hardwareMap.get(Servo.class, "right");
@@ -59,18 +59,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 if (!lowStageUp) {
 
-                    viper.setTargetPosition(1280);
-
-                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                    while (viper.isBusy()) {
-
-                        resetRuntime();
-                        viper.setPower(0.8);
-
-                        //500 ticks / 12.5 inches
-                    }
-
+                    drawerSlideMove(1280);
                     lowStageUp = true;
 
                 }
@@ -87,44 +76,45 @@ public class MainTeleOp extends LinearOpMode {
 
                 if (!midStageUp) {
 
-                    viper.setTargetPosition(2500);
+                    drawerSlideMove(2500);
+                    midStageUp = true;
 
-                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                    while (viper.isBusy()) {
-
-                        resetRuntime();
-                        viper.setPower(0.4);
-
-                        //500 ticks / 12.5 inches
-
-                        midStageUp = true;
-                    }
                 }
 
-            } else if (!gamepad1.b) {}
+            } else if (!gamepad1.b) {
+            }
 
             // High Level = 33.5 inches
             if (gamepad1.y) {
 
                 if (!highStageUp) {
 
-                    viper.setTargetPosition(39 20);
-
-                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                    while (viper.isBusy()) {
-
-                        resetRuntime();
-                        viper.setPower(0.8);
-
-                        //500 ticks / 12.5 inches
-                    }
-
+                    drawerSlideMove(3920);
                     highStageUp = true;
                 }
 
-            } else if (!gamepad1.y) {}
+            } else if (!gamepad1.y) {
+            }
+
+            if (gamepad1.x) {
+
+                if (lowStageUp) {
+
+                    drawerSlideMove(-1280);
+
+                } else if (midStageUp) {
+
+                    drawerSlideMove(-2500);
+
+                } else if (lowStageUp) {
+
+                    drawerSlideMove(-3920);
+
+                }
+
+            } else if (!gamepad1.x) {
+            }
+
             if (gamepad1.left_bumper) {
 
                 left.setPosition(0.5);
@@ -138,6 +128,21 @@ public class MainTeleOp extends LinearOpMode {
                 right.setPosition(0.2);
 
             }
+
+
+        }
+    }
+
+    public void drawerSlideMove(int ticks) {
+
+        viper.setTargetPosition(ticks);
+
+        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (viper.isBusy()) {
+
+            resetRuntime();
+            viper.setPower(0.8);
 
 
         }
