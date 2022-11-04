@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -75,13 +76,16 @@ public class TestAutonomous extends LinearOpMode {
         double minPower = -0.8;
         double maxPower = 0.8;
 
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+
         while (opModeIsActive()) {
 
                 correction = pid.performPID(getAngle());
-                frontLeft.setPower(power - correction);
-                frontRight.setPower(power + correction);
-                backLeft.setPower(power - correction);
-                backRight.setPower(power + correction);
+                frontLeft.setPower(0.2);
+                frontRight.setPower(0.2);
+                backLeft.setPower(0.2);
+                backRight.setPower(0.2);
 
                 //frontLeft.setPower(pid.calculate(100, frontLeft.getCurrentPosition()));
                 //frontRight.setPower(pid.calculate(100, frontRight.getCurrentPosition()));

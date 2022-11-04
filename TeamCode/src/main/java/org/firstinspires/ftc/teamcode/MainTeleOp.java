@@ -200,8 +200,8 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.right_bumper) {
 
-                left.setPosition(0.7);
-                right.setPosition(0.2);
+                left.setPosition(0.6);
+                right.setPosition(0.3);
 
             }
 
