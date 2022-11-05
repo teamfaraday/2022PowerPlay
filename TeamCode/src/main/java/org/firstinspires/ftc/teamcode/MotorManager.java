@@ -37,6 +37,7 @@ public class MotorManager {
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
+        viper.setDirection(DcMotor.Direction.REVERSE);
 
     }
 

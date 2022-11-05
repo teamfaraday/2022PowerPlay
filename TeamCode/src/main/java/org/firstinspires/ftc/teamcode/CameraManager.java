@@ -9,11 +9,12 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 public class CameraManager {
 
     private Telemetry telemetry;
-    private OpenCvCamera camera;
+    private OpenCvWebcam webcam;
     private ColorDetection pipeline;
 
     public CameraManager(HardwareMap hm, String cameraName, Telemetry telemetry) {
@@ -21,22 +22,22 @@ public class CameraManager {
         this.telemetry = telemetry;
 
         int cameraId = hm.appContext.getResources().getIdentifier("cameraId", "id", hm.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hm.get(WebcamName.class, cameraName), cameraId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hm.get(WebcamName.class, cameraName), cameraId);
         pipeline = new ColorDetection(telemetry);
-        camera.setPipeline(pipeline);
+        webcam.setPipeline(pipeline);
+    }
 
+    public void init() {
         openCamera();
-
-
     }
 
     public void openCamera() {
 
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
 
-                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
 
             }
 
@@ -58,7 +59,7 @@ public class CameraManager {
 
     public void stopCamera() {
 
-        camera.stopStreaming();
+        webcam.stopStreaming();
 
     }
 

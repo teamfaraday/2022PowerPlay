@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name = "Color Detection")
+@Autonomous(name = "Color Detection", group = "Test")
 public class ColorDetectionInit extends LinearOpMode {
 
 
@@ -13,6 +13,7 @@ public class ColorDetectionInit extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         CameraManager cm = new CameraManager(hardwareMap, "webcam", telemetry);
+        cm.init();
 
         telemetry.addLine("Image detection finished");
         telemetry.update();
@@ -20,6 +21,8 @@ public class ColorDetectionInit extends LinearOpMode {
         waitForStart();
 
         telemetry.addLine("Color: " + cm.getColor());
+
+        while( !isStopRequested());
 
 
     }

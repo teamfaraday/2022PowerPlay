@@ -129,11 +129,11 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.x) {
 
-                viper.setDirection(DcMotorSimple.Direction.REVERSE);
+                viper.setDirection(DcMotorSimple.Direction.FORWARD);
 
                 if (lowStageUp) {
 
-                    viper.setTargetPosition(10);
+                    viper.setTargetPosition(1280);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -150,7 +150,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 } else if (midStageUp) {
 
-                    viper.setTargetPosition(10);
+                    viper.setTargetPosition(2500);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -167,7 +167,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 } else if (highStageUp) {
 
-                    viper.setTargetPosition(10);
+                    viper.setTargetPosition(3920);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -184,24 +184,24 @@ public class MainTeleOp extends LinearOpMode {
 
                 }
 
-                viper.setDirection(DcMotorSimple.Direction.FORWARD);
+                viper.setDirection(DcMotorSimple.Direction.REVERSE);
 
             } else if (!gamepad1.x) {
             }
 
             if (gamepad1.left_bumper) {
+                //open
 
-
-
-                left.setPosition(0.5);
-                right.setPosition(0.4);
+                left.setPosition(0.23);
+                right.setPosition(0.67);
 
             }
 
             if (gamepad1.right_bumper) {
+                //close
 
-                left.setPosition(0.6);
-                right.setPosition(0.3);
+                left.setPosition(0.38);
+                right.setPosition(0.55);
 
             }
 

@@ -10,8 +10,7 @@ public class ViperTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DcMotor viperLeft = hardwareMap.get(DcMotor.class, "viperLeft");
-        DcMotor viperRight = hardwareMap.get(DcMotor.class, "viperRight");
+        DcMotor viper = hardwareMap.get(DcMotor.class, "viper");
 
         waitForStart();
 
@@ -19,26 +18,22 @@ public class ViperTest extends LinearOpMode {
 
             if(gamepad1.a) {
 
-                viperLeft.setPower(-0.3);
-                viperRight.setPower(-0.3);
+                viper.setPower(-0.3);
 
             } else if (!gamepad1.a) {
 
-                viperLeft.setPower(0);
-                viperRight.setPower(0);
+                viper.setPower(0);
 
             }
 
             if (gamepad1.b) {
 
-                viperLeft.setPower(0.3);
-                viperRight.setPower(0.3);
+                viper.setPower(0.3);
 
 
             } else if (!gamepad1.b) {
 
-                viperLeft.setPower(0);
-                viperRight.setPower(0);
+                viper.setPower(0);
 
             }
         }
