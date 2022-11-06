@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,8 +11,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name = "TestAutonomous")
-public class TestAutonomous extends LinearOpMode {
+@Autonomous(name="BlueRightAutoSub",group="Blue")
+public class BlueRightAutoSub extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -31,11 +32,8 @@ public class TestAutonomous extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-
     @Override
     public void runOpMode() throws InterruptedException {
-
-
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -77,11 +75,13 @@ public class TestAutonomous extends LinearOpMode {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Driver ready to start
         telemetry.addData("Mode", "waiting for start");
@@ -92,16 +92,13 @@ public class TestAutonomous extends LinearOpMode {
 
         //actual code under
 
-        double minPower = -0.8;
-        double maxPower = 0.8;
+        //servo close
+        left.setPosition(0.43);
+        right.setPosition(0.5);
 
-        forward(-12, 0.8);
-
-        strafeRight(22, 0.8);
-
-        viper.setTargetPosition(1200);
+        //highest pole slides move up
+        viper.setTargetPosition(4320);
         viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         while (viper.isBusy()) {
 
             resetRuntime();
@@ -110,7 +107,31 @@ public class TestAutonomous extends LinearOpMode {
         }
         viper.setPower(0.02);
 
+        //go to highest
+        strafeLeft(23,0.8);
+        forward(36,0.8);
+        strafeLeft(12,0.8);
 
+        //release
+        left.setPosition(0.23);
+        right.setPosition(0.67);
+        forward(-6,0.8);
+        viper.setDirection(DcMotor.Direction.FORWARD);
+        viper.setTargetPosition(15);
+        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (viper.isBusy()) {
+
+            resetRuntime();
+            viper.setPower(0.6);
+
+        }
+        viper.setDirection(DcMotor.Direction.REVERSE);
+
+
+        //go to terminal
+        strafeRight(9,0.8);
+        forward(-32,0.8);
+        strafeLeft(12,0.8);
     }
 
     public void forward(int inches, double speed) {
@@ -167,7 +188,7 @@ public class TestAutonomous extends LinearOpMode {
     }
 
     private void strafeRight(int inches, double speed) {
-        if(opModeIsActive()) {
+        if (opModeIsActive()) {
             // howMuch is in inches. A negative howMuch moves backward.
 
             // fetch motor positions
@@ -215,35 +236,57 @@ public class TestAutonomous extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
     }
 
-    private void strafeLeft(int howMuch, double speed) {
-        // howMuch is in inches. A negative howMuch moves backward.
+    private void strafeLeft(int inches, double speed) {
+        if (opModeIsActive()) {
+            // howMuch is in inches. A negative howMuch moves backward.
 
-        // fetch motor positions
-        lfPos = frontLeft.getCurrentPosition();
-        rfPos = frontRight.getCurrentPosition();
-        lbPos = backLeft.getCurrentPosition();
-        rbPos = backRight.getCurrentPosition();
+            // fetch motor positions
+            lfPos = frontLeft.getCurrentPosition();
+            rfPos = frontRight.getCurrentPosition();
+            lbPos = backLeft.getCurrentPosition();
+            rbPos = backRight.getCurrentPosition();
 
-        // calculate new targets
-        lfPos -= howMuch * TICKS_PER_INCH;
-        rfPos += howMuch * TICKS_PER_INCH;
-        lbPos += howMuch * TICKS_PER_INCH;
-        rbPos -= howMuch * TICKS_PER_INCH;
+            // calculate new targets
+            lfPos -= (int) (inches * TICKS_PER_INCH);
+            rfPos += (int) (inches * TICKS_PER_INCH);
+            lbPos += (int) (inches * TICKS_PER_INCH);
+            rbPos -= (int) (inches * TICKS_PER_INCH);
 
-        // move robot to new position
-        frontLeft.setTargetPosition(lfPos);
-        frontRight.setTargetPosition(rfPos);
-        backLeft.setTargetPosition(lbPos);
-        backRight.setTargetPosition(rbPos);
+            // move robot to new position
+            frontLeft.setTargetPosition(lfPos);
+            frontRight.setTargetPosition(rfPos);
+            backLeft.setTargetPosition(lbPos);
+            backRight.setTargetPosition(rbPos);
 
-        frontLeft.setPower(speed);
-        frontRight.setPower(speed);
-        backLeft.setPower(speed);
-        backRight.setPower(speed);
+            frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
+
+                runtime.reset();
+                frontLeft.setPower(speed);
+                frontRight.setPower(speed+0.06);
+                backLeft.setPower(speed+0.06);
+                backRight.setPower(speed);
+
+            }
+
+            // Stop all motion;
+            frontLeft.setPower(0);
+            frontRight.setPower(0);
+            backLeft.setPower(0);
+            backRight.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
     }
-
 }
