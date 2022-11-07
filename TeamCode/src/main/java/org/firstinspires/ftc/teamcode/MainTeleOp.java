@@ -69,7 +69,7 @@ public class MainTeleOp extends LinearOpMode {
                     while (viper.isBusy()) {
 
                         resetRuntime();
-                        viper.setPower(0.8);
+                        viper.setPower(0.86);
 
                     }
 
@@ -96,7 +96,7 @@ public class MainTeleOp extends LinearOpMode {
                     while (viper.isBusy()) {
 
                         resetRuntime();
-                        viper.setPower(0.8);
+                        viper.setPower(0.86);
 
                     }
 
@@ -119,7 +119,7 @@ public class MainTeleOp extends LinearOpMode {
                     while (viper.isBusy()) {
 
                         resetRuntime();
-                        viper.setPower(0.8);
+                        viper.setPower(0.86);
 
                     }
                     highStageUp = true;
@@ -139,7 +139,7 @@ public class MainTeleOp extends LinearOpMode {
                     while (viper.isBusy()) {
 
                         resetRuntime();
-                        viper.setPower(0.8);
+                        viper.setPower(0.86);
 
                     }
                     groundStageUp = true;
