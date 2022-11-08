@@ -15,6 +15,7 @@ public class HardwareController {
 
     public enum POSITION {
 
+        GROUND,
         BOTTOM,
         MIDDLE,
         TOP,
@@ -32,6 +33,7 @@ public class HardwareController {
         left = lf;
         right = rf;
 
+        setMotorState();
         stopResetEncoders();
         runWithoutEncoders();
 
@@ -81,7 +83,20 @@ public class HardwareController {
 
     public void viperRunToPosition(POSITION p, boolean flag) {
 
-        if (p == POSITION.BOTTOM) {
+        if (p == POSITION.GROUND) {
+
+            viper.setTargetPosition(600);
+
+            viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            if (flag) {
+
+                viper.setPower(0.86);
+
+            }
+
+
+        } else if (p == POSITION.BOTTOM) {
 
             viper.setTargetPosition(1880);
 
@@ -118,8 +133,6 @@ public class HardwareController {
             }
 
         }
-
-
     }
 
     public void viperReturn(boolean flag) {
@@ -130,9 +143,7 @@ public class HardwareController {
 
             viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            viper.setPower(0.6);
-
-            flag = false;
+            viper.setPower(0.86);
 
         }
     }
