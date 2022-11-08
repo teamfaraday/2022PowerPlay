@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -23,8 +22,6 @@ public class MainTeleOp extends LinearOpMode {
         Servo left = hardwareMap.get(Servo.class, "left");
         Servo right = hardwareMap.get(Servo.class, "right");
 
-        viper.setDirection(DcMotor.Direction.REVERSE);
-
         boolean groundStageUp = false;
         boolean lowStageUp = false;
         boolean midStageUp = false;
@@ -37,7 +34,7 @@ public class MainTeleOp extends LinearOpMode {
         final int SECOND_LEVEL = 0;
         final int THIRD_LEVEL = 0;
 
-        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, viper);
+        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
 
         mm.setMotorState();
 

@@ -6,7 +6,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -43,7 +42,7 @@ public class BlueLeftAutoTerm extends LinearOpMode {
         left = hardwareMap.get(Servo.class, "left");
         right = hardwareMap.get(Servo.class, "right");
 
-        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, viper);
+        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper);
         mm.setMotorState();
 
         BNO055IMU imu;

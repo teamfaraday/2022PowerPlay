@@ -42,7 +42,7 @@ public class RedLeftAutoSub extends LinearOpMode {
         left = hardwareMap.get(Servo.class, "left");
         right = hardwareMap.get(Servo.class, "right");
 
-        MotorManager mm = new MotorManager(frontLeft, frontRight, backLeft, backRight, viper);
+        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper);
         mm.setMotorState();
 
         BNO055IMU imu;
