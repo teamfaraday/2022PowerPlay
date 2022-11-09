@@ -63,7 +63,6 @@ public class HardwareController {
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
-        viper.setDirection(DcMotor.Direction.REVERSE);
 
     }
 

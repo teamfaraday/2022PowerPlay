@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -23,7 +24,6 @@ public class TestAutonomous extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -37,6 +37,7 @@ public class TestAutonomous extends LinearOpMode {
 
         HardwareController hc = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
 
+        viper.setDirection(DcMotor.Direction.REVERSE);
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
@@ -59,11 +60,8 @@ public class TestAutonomous extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            hc.autoForward(-12, 0.8);
+            hc.autoForward(12, 0.8);
             hc.autoStrafeRight(22, 0.8);
-
-            hc.autoViperRunToPosition(HardwareController.POSITION.BOTTOM, 0.8);
-
 
         }
 
