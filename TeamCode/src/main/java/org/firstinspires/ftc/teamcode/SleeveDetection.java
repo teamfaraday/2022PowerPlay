@@ -23,11 +23,11 @@ public class SleeveDetection extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(915, 200);
+    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(675, 425);
 
     // Width and height for the bounding box
-    public static int REGION_WIDTH = 60;
-    public static int REGION_HEIGHT = 90;
+    public static int REGION_WIDTH = 95;
+    public static int REGION_HEIGHT = 200;
 
     // Lower and upper boundaries for colors, use HSV
     private static final Scalar
@@ -57,7 +57,7 @@ public class SleeveDetection extends OpenCvPipeline {
             SLEEVE_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
 
     // Running variable storing the parking position
-    private volatile ParkingPosition position = ParkingPosition.LEFT;
+    private volatile ParkingPosition position = ParkingPosition.RIGHT;
 
     @Override
     public Mat processFrame(Mat input) {
@@ -102,7 +102,7 @@ public class SleeveDetection extends OpenCvPipeline {
                     CYAN,
                     2
             );
-        } else if (maxPercent == magPercent) {
+        } else {
             position = ParkingPosition.RIGHT;
             Imgproc.rectangle(
                     input,

@@ -6,14 +6,13 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="nah",group="Blue")
-public class TestAutonomous extends LinearOpMode {
+@Autonomous(name="BlueLeftAutoPark",group="Blue")
+public class BlueLeftAutoPark extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -45,7 +44,6 @@ public class TestAutonomous extends LinearOpMode {
 
         HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
         mm.setMotorState();
-        viper.setDirection(DcMotor.Direction.REVERSE);
 
         BNO055IMU imu;
         Orientation lastAngles = new Orientation();
@@ -93,19 +91,7 @@ public class TestAutonomous extends LinearOpMode {
         waitForStart();
 
         //actual code under
-
-        while(opModeIsActive()) {
-
-            //viper.setTargetPosition(1680);
-
-            //viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            //viper.setPower(0.86);
-
-
-            moveLow();
-        }
-
+        strafeRight(33,0.8);
     }
 
     public void forward(int inches, double speed) {
@@ -261,51 +247,6 @@ public class TestAutonomous extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
-    }
-
-    public void moveLow() {
-
-        viper.setTargetPosition(1680);
-
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        viper.setPower(0.86);
-
-    }
-
-    public void moveMiddle() {
-
-        viper.setTargetPosition(3000);
-
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        viper.setPower(0.86);
-
-    }
-
-    public void moveHigh() {
-
-        viper.setTargetPosition(4120);
-
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        viper.setPower(0.86);
-
-    }
-
-    public void moveDown() {
-
-        viper.setDirection(DcMotor.Direction.FORWARD);
-
-        viper.setTargetPosition(15);
-
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        viper.setPower(0.86);
-
-        viper.setDirection(DcMotorSimple.Direction.REVERSE);
-
 
     }
 }

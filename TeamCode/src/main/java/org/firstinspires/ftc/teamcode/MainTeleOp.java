@@ -63,7 +63,7 @@ public class MainTeleOp extends OpMode {
 
                 if (gamepad1.a) {
 
-                    viper.setTargetPosition(1880);
+                    viper.setTargetPosition(1680);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -74,7 +74,7 @@ public class MainTeleOp extends OpMode {
 
                 if (gamepad1.b) {
 
-                    viper.setTargetPosition(3100);
+                    viper.setTargetPosition(3000);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -85,7 +85,7 @@ public class MainTeleOp extends OpMode {
 
                 if (gamepad1.y) {
 
-                    viper.setTargetPosition(4320);
+                    viper.setTargetPosition(4120);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -100,10 +100,10 @@ public class MainTeleOp extends OpMode {
 
             case LIFT_DROP:
 
-                if (gamepad1.right_bumper) {
+                if (gamepad1.left_bumper) {
 
-                    left.setPosition(0.23);
-                    right.setPosition(0.67);
+                    left.setPosition(0.33);
+                    right.setPosition(0.57);
 
                 }
 
@@ -113,10 +113,10 @@ public class MainTeleOp extends OpMode {
 
             case LIFT_CLOSED:
 
-                if (gamepad1.left_bumper) {
+                if (gamepad1.right_bumper) {
 
-                    left.setPosition(0.43);
-                    right.setPosition(0.5);
+                    left.setPosition(0.45);
+                    right.setPosition(0.36);
 
                 }
 

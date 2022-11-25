@@ -10,10 +10,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name="nah",group="Blue")
-public class TestAutonomous extends LinearOpMode {
+@Autonomous(name="RedLeftAuto",group="Blue")
+public class RedLeftAuto extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -22,6 +27,11 @@ public class TestAutonomous extends LinearOpMode {
     public DcMotor viper;
     public Servo left;
     public Servo right;
+
+    SleeveDetection sleeveDetection;
+    OpenCvWebcam webcam;
+
+    String webcamName = "webcam";
 
     private int lfPos;
     private int rfPos;
@@ -90,23 +100,132 @@ public class TestAutonomous extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        waitForStart();
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
+        sleeveDetection = new SleeveDetection();
+        webcam.setPipeline(sleeveDetection);
 
-        //actual code under
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+            }
 
-        while(opModeIsActive()) {
+            @Override
+            public void onError(int errorCode) {}
+        });
 
-            //viper.setTargetPosition(1680);
+        while (!isStarted()) {
 
-            //viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //yellow: left, cyan: middle, magenta: right
 
-            //viper.setPower(0.86);
-
-
-            moveLow();
+            telemetry.addData("Where to park: ", sleeveDetection.getPosition());
+            telemetry.update();
         }
 
-    }
+        waitForStart();
+
+        SleeveDetection.ParkingPosition sd = sleeveDetection.getPosition();
+
+            if (sd == SleeveDetection.ParkingPosition.LEFT) {
+
+                strafeLeft(3, 0.8);
+                forward(28, 0.8);
+                strafeRight(38, 0.8);
+
+                //Go High
+                while(opModeIsActive()) {
+
+                    viper.setTargetPosition(4120);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    viper.setPower(0.8);
+
+                    sleep(2000);
+
+                    left.setPosition(0.33);
+                    right.setPosition(0.57);
+
+                    sleep(1000);
+
+                    left.setPosition(0.45);
+                    right.setPosition(0.36);
+
+                    break;
+
+                }
+
+                strafeLeft(56, 0.8);
+
+
+            } else if (sd == SleeveDetection.ParkingPosition.CENTER) {
+
+                strafeLeft(3, 0.8);
+                forward(28, 0.8);
+                strafeRight(38, 0.8);
+
+                //Go High
+                while(opModeIsActive()) {
+
+                    viper.setTargetPosition(4120);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    viper.setPower(0.8);
+
+                    sleep(2000);
+
+                    left.setPosition(0.33);
+                    right.setPosition(0.57);
+
+                    sleep(1000);
+
+                    left.setPosition(0.45);
+                    right.setPosition(0.36);
+
+                    break;
+
+                }
+
+                strafeLeft(28, 0.8);
+
+
+            } else if (sd == SleeveDetection.ParkingPosition.RIGHT) {
+
+                strafeLeft(3, 0.8);
+                forward(28, 0.8);
+                strafeRight(38, 0.8);
+
+                //Go High
+                while(opModeIsActive()) {
+
+                    viper.setTargetPosition(4120);
+
+                    viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    viper.setPower(0.86);
+
+                    sleep(2000);
+
+                    left.setPosition(0.33);
+                    right.setPosition(0.57);
+
+                    sleep(1000);
+
+                    left.setPosition(0.45);
+                    right.setPosition(0.36);
+
+                    break;
+
+                }
+
+                strafeLeft(12, 0.8);
+            }
+
+        }
 
     public void forward(int inches, double speed) {
 
@@ -162,7 +281,9 @@ public class TestAutonomous extends LinearOpMode {
     }
 
     private void strafeRight(int inches, double speed) {
-        if (opModeIsActive()) {
+
+        if(opModeIsActive()) {
+
             // howMuch is in inches. A negative howMuch moves backward.
 
             // fetch motor positions
@@ -191,10 +312,10 @@ public class TestAutonomous extends LinearOpMode {
             while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
 
                 runtime.reset();
-                frontLeft.setPower(speed+0.06);
+                frontLeft.setPower(speed + 0.06);
                 frontRight.setPower(speed);
                 backLeft.setPower(speed);
-                backRight.setPower(speed+0.06);
+                backRight.setPower(speed + 0.06);
 
             }
 
@@ -213,8 +334,9 @@ public class TestAutonomous extends LinearOpMode {
     }
 
     private void strafeLeft(int inches, double speed) {
-        if (opModeIsActive()) {
             // howMuch is in inches. A negative howMuch moves backward.
+
+        if(opModeIsActive()) {
 
             // fetch motor positions
             lfPos = frontLeft.getCurrentPosition();
@@ -243,8 +365,8 @@ public class TestAutonomous extends LinearOpMode {
 
                 runtime.reset();
                 frontLeft.setPower(speed);
-                frontRight.setPower(speed+0.06);
-                backLeft.setPower(speed+0.06);
+                frontRight.setPower(speed + 0.06);
+                backLeft.setPower(speed + 0.06);
                 backRight.setPower(speed);
 
             }
@@ -261,51 +383,65 @@ public class TestAutonomous extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
     }
 
     public void moveLow() {
 
-        viper.setTargetPosition(1680);
+            viper.setTargetPosition(1680);
 
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        viper.setPower(0.86);
+            viper.setPower(0.86);
 
     }
 
     public void moveMiddle() {
 
-        viper.setTargetPosition(3000);
+            viper.setTargetPosition(3000);
 
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        viper.setPower(0.86);
+            viper.setPower(0.86);
+
 
     }
 
     public void moveHigh() {
 
-        viper.setTargetPosition(4120);
+            viper.setTargetPosition(4120);
 
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        viper.setPower(0.86);
+            viper.setPower(0.86);
 
     }
 
     public void moveDown() {
 
-        viper.setDirection(DcMotor.Direction.FORWARD);
+            viper.setDirection(DcMotor.Direction.FORWARD);
 
-        viper.setTargetPosition(15);
+            viper.setTargetPosition(15);
 
-        viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        viper.setPower(0.86);
+            viper.setPower(0.86);
 
-        viper.setDirection(DcMotorSimple.Direction.REVERSE);
-
+            viper.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
+
+    public void release() {
+
+            left.setPosition(0.23);
+            right.setPosition(0.67);
+
+    }
+
+    public void close() {
+
+            left.setPosition(0.43);
+            right.setPosition(0.46);
+
+        }
+
 }
