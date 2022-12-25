@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+@Disabled
 @Autonomous(name="RedLeftAutoPark",group="Red")
 public class RedLeftAutoPark extends LinearOpMode {
 
@@ -19,8 +21,7 @@ public class RedLeftAutoPark extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor viper;
-    public Servo left;
-    public Servo right;
+    public Servo claw;
 
     private int lfPos;
     private int rfPos;
@@ -39,11 +40,10 @@ public class RedLeftAutoPark extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         viper = hardwareMap.get(DcMotor.class, "viper");
-        left = hardwareMap.get(Servo.class, "left");
-        right = hardwareMap.get(Servo.class, "right");
+        claw = hardwareMap.get(Servo.class, "claw");
 
-        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
-        mm.setMotorState();
+        //HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
+        //mm.setMotorState();
 
         BNO055IMU imu;
         Orientation lastAngles = new Orientation();
@@ -158,10 +158,10 @@ public class RedLeftAutoPark extends LinearOpMode {
             rbPos = backRight.getCurrentPosition();
 
             // calculate new targets
-            lfPos += (int) (inches * TICKS_PER_INCH);
-            rfPos -= (int) (inches * TICKS_PER_INCH);
-            lbPos -= (int) (inches * TICKS_PER_INCH);
-            rbPos += (int) (inches * TICKS_PER_INCH);
+            lfPos += (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            rfPos -= (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            lbPos -= (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            rbPos += (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
 
             // move robot to new position
             frontLeft.setTargetPosition(lfPos);
@@ -177,10 +177,10 @@ public class RedLeftAutoPark extends LinearOpMode {
             while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
 
                 runtime.reset();
-                frontLeft.setPower(speed+0.06);
-                frontRight.setPower(speed);
-                backLeft.setPower(speed);
-                backRight.setPower(speed+0.06);
+                frontLeft.setPower(Math.abs(speed));
+                frontRight.setPower(Math.abs(speed));
+                backLeft.setPower(Math.abs(speed));
+                backRight.setPower(Math.abs(speed));
 
             }
 
@@ -208,11 +208,13 @@ public class RedLeftAutoPark extends LinearOpMode {
             lbPos = backLeft.getCurrentPosition();
             rbPos = backRight.getCurrentPosition();
 
+
+
             // calculate new targets
-            lfPos -= (int) (inches * TICKS_PER_INCH);
-            rfPos += (int) (inches * TICKS_PER_INCH);
-            lbPos += (int) (inches * TICKS_PER_INCH);
-            rbPos -= (int) (inches * TICKS_PER_INCH);
+            lfPos -= (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            rfPos += (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            lbPos += (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
+            rbPos -= (int) (inches * TICKS_PER_INCH * DISTANCE_RATIO);
 
             // move robot to new position
             frontLeft.setTargetPosition(lfPos);
@@ -227,11 +229,13 @@ public class RedLeftAutoPark extends LinearOpMode {
 
             while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
 
-                runtime.reset();
-                frontLeft.setPower(speed);
-                frontRight.setPower(speed+0.06);
-                backLeft.setPower(speed+0.06);
-                backRight.setPower(speed);
+                frontLeft.setPower(Math.abs(speed));
+                backRight.setPower(Math.abs(speed));
+
+                sleep(10);
+
+                frontRight.setPower(Math.abs(speed));
+                backLeft.setPower(Math.abs(speed));
 
             }
 

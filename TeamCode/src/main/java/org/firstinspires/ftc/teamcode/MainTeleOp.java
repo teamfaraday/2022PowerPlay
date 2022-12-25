@@ -16,9 +16,8 @@ public class MainTeleOp extends OpMode {
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
-    public DcMotor viper;
-    public Servo left;
-    public Servo right;
+    //public DcMotor viper;
+    public Servo claw;
 
     public enum LiftState {
         LIFT_START,
@@ -45,18 +44,29 @@ public class MainTeleOp extends OpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        viper = hardwareMap.get(DcMotor.class, "viper");
-        left = hardwareMap.get(Servo.class, "left");
-        right = hardwareMap.get(Servo.class, "right");
+        //viper = hardwareMap.get(DcMotor.class, "viper");
+        claw = hardwareMap.get(Servo.class, "claw");
 
-        HardwareController hc = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
-        viper.setDirection(DcMotor.Direction.REVERSE);
+        //HardwareController hc = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, claw);
+        //viper.setDirection(DcMotor.Direction.REVERSE);
+
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //viper.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
 
     }
+
 
     @Override
     public void loop() {
 
+        /**
         switch (liftState) {
 
             case LIFT_START:
@@ -102,8 +112,7 @@ public class MainTeleOp extends OpMode {
 
                 if (gamepad1.left_bumper) {
 
-                    left.setPosition(0.33);
-                    right.setPosition(0.57);
+                    claw.setPosition(0);
 
                 }
 
@@ -115,8 +124,7 @@ public class MainTeleOp extends OpMode {
 
                 if (gamepad1.right_bumper) {
 
-                    left.setPosition(0.45);
-                    right.setPosition(0.36);
+                    claw.setPosition(0.3);
 
                 }
 
@@ -130,13 +138,13 @@ public class MainTeleOp extends OpMode {
 
                     viper.setDirection(DcMotor.Direction.FORWARD);
 
-                    viper.setTargetPosition(15);
+                    viper.setTargetPosition(40);
 
                     viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                     viper.setPower(0.86);
 
-                    viper.setDirection(DcMotorSimple.Direction.REVERSE);
+                    viper.setDirection(DcMotor.Direction.REVERSE);
 
 
                 }
@@ -149,6 +157,8 @@ public class MainTeleOp extends OpMode {
                 liftState = LiftState.LIFT_START;
 
         }
+
+        **/
 
         double minPower = -0.8;
         double maxPower = 0.8;

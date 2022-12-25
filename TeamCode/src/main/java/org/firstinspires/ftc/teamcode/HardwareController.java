@@ -10,8 +10,7 @@ public class HardwareController {
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor viper;
-    private Servo left;
-    private Servo right;
+    private Servo claw;
 
     private int lfPos;
     private int rfPos;
@@ -31,15 +30,14 @@ public class HardwareController {
 
     }
 
-    public HardwareController(DcMotor l, DcMotor r, DcMotor bl, DcMotor br, DcMotor v, Servo lf, Servo rf) {
+    public HardwareController(DcMotor l, DcMotor r, DcMotor bl, DcMotor br, DcMotor viper, Servo c) {
 
         frontLeft = l;
         frontRight = r;
         backLeft = bl;
         backRight = br;
-        viper = v;
-        left = lf;
-        right = rf;
+        viper = l;
+        claw = c;
 
         lfPos = 0;
         rfPos = 0;
@@ -160,19 +158,6 @@ public class HardwareController {
         }
     }
 
-    public void openClaw() {
-
-        left.setPosition(0.23);
-        right.setPosition(0.67);
-
-    }
-
-    public void closeClaw() {
-
-        left.setPosition(0.43);
-        right.setPosition(0.5);
-
-    }
 
     public void autoForward(int inches, double speed) {
 

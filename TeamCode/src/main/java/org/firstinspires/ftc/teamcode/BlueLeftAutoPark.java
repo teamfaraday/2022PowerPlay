@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,6 +12,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import kotlin.DslMarker;
+
+@Disabled
 @Autonomous(name="BlueLeftAutoPark",group="Blue")
 public class BlueLeftAutoPark extends LinearOpMode {
 
@@ -19,8 +23,7 @@ public class BlueLeftAutoPark extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor viper;
-    public Servo left;
-    public Servo right;
+    public Servo claw;
 
     private int lfPos;
     private int rfPos;
@@ -39,11 +42,10 @@ public class BlueLeftAutoPark extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         viper = hardwareMap.get(DcMotor.class, "viper");
-        left = hardwareMap.get(Servo.class, "left");
-        right = hardwareMap.get(Servo.class, "right");
+        claw = hardwareMap.get(Servo.class, "claw");
 
-        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
-        mm.setMotorState();
+        //HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
+        //mm.setMotorState();
 
         BNO055IMU imu;
         Orientation lastAngles = new Orientation();
@@ -91,7 +93,7 @@ public class BlueLeftAutoPark extends LinearOpMode {
         waitForStart();
 
         //actual code under
-        strafeRight(33,0.8);
+        forward(11,0.7);
     }
 
     public void forward(int inches, double speed) {
@@ -148,7 +150,9 @@ public class BlueLeftAutoPark extends LinearOpMode {
     }
 
     private void strafeRight(int inches, double speed) {
-        if (opModeIsActive()) {
+
+        if(opModeIsActive()) {
+
             // howMuch is in inches. A negative howMuch moves backward.
 
             // fetch motor positions
@@ -177,10 +181,10 @@ public class BlueLeftAutoPark extends LinearOpMode {
             while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
 
                 runtime.reset();
-                frontLeft.setPower(speed+0.06);
+                frontLeft.setPower(speed);
                 frontRight.setPower(speed);
                 backLeft.setPower(speed);
-                backRight.setPower(speed+0.06);
+                backRight.setPower(speed);
 
             }
 
@@ -198,9 +202,11 @@ public class BlueLeftAutoPark extends LinearOpMode {
         }
     }
 
+
     private void strafeLeft(int inches, double speed) {
-        if (opModeIsActive()) {
-            // howMuch is in inches. A negative howMuch moves backward.
+        // howMuch is in inches. A negative howMuch moves backward.
+
+        if(opModeIsActive()) {
 
             // fetch motor positions
             lfPos = frontLeft.getCurrentPosition();
@@ -229,8 +235,8 @@ public class BlueLeftAutoPark extends LinearOpMode {
 
                 runtime.reset();
                 frontLeft.setPower(speed);
-                frontRight.setPower(speed+0.06);
-                backLeft.setPower(speed+0.06);
+                frontRight.setPower(speed);
+                backLeft.setPower(speed);
                 backRight.setPower(speed);
 
             }
@@ -247,6 +253,5 @@ public class BlueLeftAutoPark extends LinearOpMode {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
     }
 }

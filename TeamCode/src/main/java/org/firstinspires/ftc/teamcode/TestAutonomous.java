@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -11,6 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+@Disabled
 
 @Autonomous(name="nah",group="Blue")
 public class TestAutonomous extends LinearOpMode {
@@ -43,8 +46,8 @@ public class TestAutonomous extends LinearOpMode {
         left = hardwareMap.get(Servo.class, "left");
         right = hardwareMap.get(Servo.class, "right");
 
-        HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
-        mm.setMotorState();
+        //HardwareController mm = new HardwareController(frontLeft, frontRight, backLeft, backRight, viper, left, right);
+        //mm.setMotorState();
         viper.setDirection(DcMotor.Direction.REVERSE);
 
         BNO055IMU imu;
